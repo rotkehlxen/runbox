@@ -25,7 +25,9 @@ def main() -> None:
     pass
 
 
-def process_data(data: pd.DataFrame, year: int, bins: list[int]) -> pd.DataFrame:
+def process_data(
+    data: pd.DataFrame, year: int, bins: list[int]
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Process the data for visualization.
     This is done for a particular [year] (running data from one year are shown).

@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 
-def hsl_to_hex(h, s, lightness):
+def hsl_to_hex(h, s, lightness) -> str:
     """Convert HSL (0-1) to HEX"""
     r, g, b = colorsys.hls_to_rgb(h, lightness, s)
     return "#%02x%02x%02x" % (int(r * 255), int(g * 255), int(b * 255))
@@ -34,6 +34,7 @@ def github_weekday(date: dt.date) -> int:
 
 def week_of_year(date: dt.date, year: int) -> int:
     """
+    Return the week of the year for a given [date] in the [year].
     In the isocalendar system, the last days in the year can be in the first week of the next year.
     To avoid this, we use this custom week of year function.
     """
@@ -71,7 +72,7 @@ def weekday_labels_y() -> dict:
 
 def week_labels_x(year: int) -> dict:
     """
-    Return labels for the weeks of the year in github style.
+    Return labels for the weeks of the year (x axis) in github style.
     Only the first week of each month is labeled with the corresponding month name.
     Returns [0, 5, 9, 13, ...], ["Jan", "Feb", "Mar", "Apr", ...]
 
@@ -103,7 +104,7 @@ def week_labels_x(year: int) -> dict:
     }
 
 
-def color_scale_labels(num_colors):
+def color_scale_labels(num_colors: int) -> dict:
     # return tickvals, ticktext
     lc = [""] * (num_colors)
     lc[0] = "less"
