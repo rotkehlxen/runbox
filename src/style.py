@@ -51,22 +51,25 @@ def date_range(date_from: dt.date, date_to: dt.date) -> list[dt.date]:
     ]
 
 
-def weekday_labels_y() -> list[str]:
+def weekday_labels_y() -> dict:
     """
     Return labels for the days of the week in github style
     """
-    return [
-        "",
-        "Mon  ",
-        "",
-        "Wed  ",
-        "",
-        "Fri  ",
-        "",
-    ]  # whitespaces for vertical alignment
+    return {
+        "tickvals": list(range(7)),
+        "ticktext": [
+            "",
+            "Mon  ",
+            "",
+            "Wed  ",
+            "",
+            "Fri  ",
+            "",
+        ],
+    }  # whitespaces for vertical alignment
 
 
-def week_labels_x(year: int) -> list[str]:
+def week_labels_x(year: int) -> dict:
     """
     Return labels for the weeks of the year in github style.
     Only the first week of each month is labeled with the corresponding month name.
@@ -76,7 +79,7 @@ def week_labels_x(year: int) -> list[str]:
     """
     # date range for the year
     base = pd.DataFrame(
-        {"date": date_range(dt.date(year, 1, 1), dt.date(year), 12, 31)}
+        {"date": date_range(dt.date(year, 1, 1), dt.date(year, 12, 31))}
     )
     base["month"] = base.date.apply(lambda x: x.strftime("%b"))
     base["calendar_week"] = base.date.apply(lambda x: week_of_year(x, 2025))
@@ -94,4 +97,15 @@ def week_labels_x(year: int) -> list[str]:
     # only one calendarweek per month (the first one in the month)
     label_frame = dedup.drop_duplicates(subset=["month"], keep="first")
     # return tickvals, ticktext
-    return label_frame.calendar_week.to_list(), label_frame.month.to_list()
+    return {
+        "tickvals": label_frame.calendar_week.to_list(),
+        "ticktext": label_frame.month.to_list(),
+    }
+
+
+def color_scale_labels(num_colors):
+    # return tickvals, ticktext
+    lc = [""] * (num_colors)
+    lc[0] = "less"
+    lc[-1] = "more"
+    return {"tickvals": list(range(num_colors)), "ticktext": lc}
