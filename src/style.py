@@ -11,9 +11,19 @@ def hsl_to_hex(h, s, lightness) -> str:
     return "#%02x%02x%02x" % (int(r * 255), int(g * 255), int(b * 255))
 
 
-def custom_color_scale(num_colors: int, hue: int, saturation: float = 0.7) -> list:
+def custom_color_scale(
+    num_colors: int, mode: str, hue: int, saturation: float = 0.7
+) -> list:
+    """
+    Create a custom color scale for the heatmap with one color indicating no acitivity
+    (light gray in light mode, dark gray in dark mode). Color scale is created with
+    [hue] and [saturation] parameters in [num_colors] lightness values.
+    """
     # green = 120
     hue = hue / 360
+
+    # empty color
+    empty_col = "#333333" if mode == "dark" else "#f0f0f0"
 
     # Choose [num_colorss] lightness values evenly spaced
     lightness_values = list(np.linspace(0.85, 0.15, num_colors))
@@ -21,7 +31,7 @@ def custom_color_scale(num_colors: int, hue: int, saturation: float = 0.7) -> li
     color_scale = [
         hsl_to_hex(hue, saturation, lightness) for lightness in lightness_values
     ]
-    return ["#f0f0f0"] + color_scale  # including light gray as baseline color
+    return [empty_col] + color_scale  # including light gray as baseline color
 
 
 def github_weekday(date: dt.date) -> int:
