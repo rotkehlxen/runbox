@@ -48,7 +48,7 @@ def process_data(
     data["hover_label"] = data.apply(
         lambda row: (
             f"{np.round(row['distance_km'], 3)} km <br> {row['date']}"
-            + f"{' in ' + row['place'] if row['place'] != 0 else ''}"
+            f"{' in ' + row['place'] if row['place'] != 0 else ''}"
         ),
         axis=1,
     )
