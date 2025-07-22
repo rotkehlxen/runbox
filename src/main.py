@@ -18,7 +18,7 @@ def main() -> None:
     run_activities_raw = request_data(from_date=dt.date(YEAR, 1, 1), to_date=TODAY)
     # parse and validate data
     all_runs = [GarminActivity(**activity) for activity in run_activities_raw]
-    # export seleted data to DataFrame
+    # export seleted data fields to DataFrame
     data = pd.DataFrame([GarminActivity.export(run) for run in all_runs])
     # process data for visualization
     plot_data, hover_labels = process_data(data=data, year=YEAR, bins=BINS)
