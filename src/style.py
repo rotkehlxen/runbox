@@ -4,6 +4,18 @@ import datetime as dt
 import numpy as np
 import pandas as pd
 
+MUDDY_WHITE = "#C9D1D9"
+DARK_LAYOUT_SETTINGS = {
+    "plot_bgcolor": "black",
+    "paper_bgcolor": "black",
+    "font": {"color": MUDDY_WHITE},
+    "xaxis": dict(color=MUDDY_WHITE, gridcolor="black", zeroline=False),
+    "yaxis": dict(color=MUDDY_WHITE, gridcolor="black", zeroline=False),
+}
+LIGHT_LAYOUT_SETTINGS = {"plot_bgcolor": "white"}
+
+BINS = [-1, 0, 3, 5, 8, 100]
+
 
 def hsl_to_hex(h, s, lightness) -> str:
     """Convert HSL (0-1) to HEX"""
@@ -26,7 +38,7 @@ def custom_color_scale(
     empty_col = "#333333" if mode == "dark" else "#f0f0f0"
 
     # Choose [num_colorss] lightness values evenly spaced
-    lightness_values = list(np.linspace(0.85, 0.15, num_colors))
+    lightness_values = list(np.linspace(0.85, 0.15, num_colors - 1))
 
     color_scale = [
         hsl_to_hex(hue, saturation, lightness) for lightness in lightness_values

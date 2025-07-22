@@ -3,9 +3,21 @@ import json
 
 import numpy as np
 import pandas as pd
+import plotly.graph_objects as go
 
 from models import GarminActivity
-from style import date_range, github_weekday, week_of_year
+from style import (
+    BINS,
+    DARK_LAYOUT_SETTINGS,
+    LIGHT_LAYOUT_SETTINGS,
+    color_scale_labels,
+    custom_color_scale,
+    date_range,
+    github_weekday,
+    week_labels_x,
+    week_of_year,
+    weekday_labels_y,
+)
 
 
 def main() -> None:
@@ -19,10 +31,15 @@ def main() -> None:
     # export data to DataFrame
     data = pd.DataFrame([GarminActivity.export(run) for run in all_runs])
     # process data for visualization
-    plot_data, hover_labels = process_data(
-        data=data, year=2025, bins=[-1, 0, 3, 5, 8, 100]
+    plot_data, hover_labels = process_data(data=data, year=2025, bins=BINS)
+    # plot and create HTML
+    create_plot_html(
+        plot_data=plot_data,
+        hover_labels=hover_labels,
+        year=2025,
+        num_colors=len(BINS),
+        mode="light",
     )
-    pass
 
 
 def process_data(
@@ -62,3 +79,46 @@ def process_data(
     return data.pivot(
         index="github_weekday", columns="calendar_week", values="distance_bin"
     ), data.pivot(index="github_weekday", columns="calendar_week", values="hover_label")
+
+
+def create_plot_html(
+    plot_data, hover_labels, year: int, num_colors: int, mode: str
+) -> None:
+    """
+    Create the HTML for the plot.
+    """
+    layout_settings = DARK_LAYOUT_SETTINGS if mode == "dark" else LIGHT_LAYOUT_SETTINGS
+    color_scale = custom_color_scale(num_colors=num_colors, mode=mode, hue=336)
+
+    fig = go.Figure(
+        go.Heatmap(
+            z=plot_data.values,
+            x=plot_data.columns,
+            y=plot_data.index,
+            zmax=num_colors - 1,
+            zmin=0,
+            colorscale=color_scale,
+            xgap=2,
+            ygap=2,
+            colorbar=dict(
+                title="km",
+                **color_scale_labels(num_colors),
+            ),
+            hoverongaps=False,
+            text=hover_labels.values,
+            hovertemplate=(" %{text}<br>" + "<extra></extra>"),
+        )
+    )
+
+    fig.update_xaxes(**week_labels_x(year))
+    fig.update_yaxes(
+        scaleanchor="x",
+        autorange="reversed",
+        tickmode="array",
+        range=[-0.5, 6.5],
+        **weekday_labels_y(),
+    )
+
+    fig.update_layout(width=1000, height=300, title="Running 2025", **layout_settings)
+
+    fig.write_html("box-chart.html")
