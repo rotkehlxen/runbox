@@ -121,4 +121,4 @@ def create_plot_html(
 
     fig.update_layout(width=1000, height=300, title="Running 2025", **layout_settings)
 
-    fig.write_html("box-chart.html")
+    fig.write_html("index.html")
