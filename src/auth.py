@@ -1,4 +1,6 @@
+import datetime as dt
 import os
+import sys
 
 from garminconnect import Garmin, GarminConnectAuthenticationError
 from garth.exc import GarthHTTPError
@@ -22,3 +24,25 @@ def connect() -> Garmin | None:
 
     except (GarthHTTPError, GarminConnectAuthenticationError):
         print("The login tokens are invalid or expired. Please rotate them.")
+
+
+def request_data(from_date: dt.date, to_date: dt.date) -> list[dict | None]:
+    """
+    Request the activity data from Garmin Connect.
+    """
+
+    garmin = connect()
+
+    if garmin:
+        try:
+            activities = garmin.get_activities_by_date(
+                from_date.isoformat(), to_date.isoformat
+            )
+
+            return activities
+
+        except (GarthHTTPError, GarminConnectAuthenticationError):
+            print("The login tokens are invalid or expired. Please rotate them.")
+
+    else:
+        sys.exit("We could not connect to Grarmin. Stopping the program.")

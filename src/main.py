@@ -1,10 +1,10 @@
 import datetime as dt
-import json
 
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
+from auth import request_data
 from models import GarminActivity
 from style import (
     BINS,
@@ -19,24 +19,26 @@ from style import (
     weekday_labels_y,
 )
 
+TODAY = dt.date.today()
+YEAR = TODAY.year
+
 
 def main() -> None:
-    # get data (will be an API call later)
-    with open("garmin_data.json", "r") as f:
-        activities = json.load(f)
+    # get data
+    activities_raw = request_data(from_date=dt.date(YEAR, 1, 1), to_date=TODAY)
     # parse and validate data
-    all_activities = [GarminActivity(**activity) for activity in activities]
+    activities = [GarminActivity(**activity) for activity in activities_raw]
     # extract all running activities
-    all_runs = [x for x in all_activities if x.activity_type.type_key == "running"]
+    all_runs = [x for x in activities if x.activity_type.type_key == "running"]
     # export data to DataFrame
     data = pd.DataFrame([GarminActivity.export(run) for run in all_runs])
     # process data for visualization
-    plot_data, hover_labels = process_data(data=data, year=2025, bins=BINS)
+    plot_data, hover_labels = process_data(data=data, year=YEAR, bins=BINS)
     # plot and create HTML
     create_plot_html(
         plot_data=plot_data,
         hover_labels=hover_labels,
-        year=2025,
+        year=YEAR,
         num_colors=len(BINS),
         mode="light",
     )
