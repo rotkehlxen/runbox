@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: write           # needed for gh-pages deployment
-  
+
 jobs:
   update-chart:
     runs-on: ubuntu-latest
@@ -55,3 +55,4 @@ jobs:
           publish_dir: .        # deploy from repo root
           destination_dir: .    # put it in root of gh-pages
           keep_files: false     # replace old version
+          force_orphan: true

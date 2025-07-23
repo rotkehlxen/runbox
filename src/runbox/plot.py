@@ -59,7 +59,7 @@ def process_data(
 
 
 def create_plot_html(
-    plot_data, hover_labels, year: int, num_colors: int, mode: str
+    plot_data, hover_labels, year: int, num_colors: int, mode: str, title: str
 ) -> None:
     """
     Create the HTML for the plot.
@@ -96,6 +96,6 @@ def create_plot_html(
         **weekday_labels_y(),
     )
 
-    fig.update_layout(width=1000, height=300, title="Running 2025", **layout_settings)
+    fig.update_layout(width=1000, height=300, title=title, **layout_settings)
 
     fig.write_html("index.html")

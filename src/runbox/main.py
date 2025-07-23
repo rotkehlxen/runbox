@@ -9,8 +9,10 @@ from runbox.style import (
     BINS,
 )
 
-TODAY = dt.date.today()
+NOW = dt.datetime.now()
+TODAY = NOW.date()
 YEAR = TODAY.year
+TITLE = f"Running {YEAR} (last updated on {NOW.strftime('%-d.%-m.%Y at %-I:%M%p')})"
 
 
 def update_chart() -> None:
@@ -29,6 +31,7 @@ def update_chart() -> None:
         year=YEAR,
         num_colors=len(BINS),
         mode="light",
+        title=TITLE,
     )
     print("Successfully created the plot in index.html.")
 
