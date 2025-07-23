@@ -6,7 +6,7 @@ on:
     - cron: "0 9 * * *"   # every day at 09:00 UTC
 
 jobs:
-  run-script:
+  update-chart:
     runs-on: ubuntu-latest
     
     steps:
@@ -27,6 +27,13 @@ jobs:
           version: 2.1.3
           virtualenvs-create: true
           virtualenvs-in-project: true
+      
+      # 4. Restore Garmin token files from secrets ($HOME refers to the home in the runner)
+      - name: Restore Garmin token files
+        run: |
+          mkdir -p $HOME/.garth
+          echo "${{ secrets.GARTH_OAUTH1 }}" > $HOME/.garth/oauth1_token.json 
+          echo "${{ secrets.GARTH_OAUTH2 }}" > $HOME/.garth/oauth2_token.json
 
       # 4. Install dependencies and the project
       - name: Install packaage and dependencies
