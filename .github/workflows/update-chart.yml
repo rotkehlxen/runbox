@@ -32,8 +32,8 @@ jobs:
       - name: Restore Garmin token files
         run: |
           mkdir -p $HOME/.garth
-          echo "${{ secrets.GARTH_OAUTH1 }}" > $HOME/.garth/oauth1_token.json 
-          echo "${{ secrets.GARTH_OAUTH2 }}" > $HOME/.garth/oauth2_token.json
+          echo "${{ secrets.GARTH_OAUTH1 }}" | base64 -d > $HOME/.garth/oauth1_token.json 
+          echo "${{ secrets.GARTH_OAUTH2 }}" | base64 -d > $HOME/.garth/oauth2_token.json
 
       # 5. Install dependencies and the project
       - name: Install packaage and dependencies
