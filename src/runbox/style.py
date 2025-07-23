@@ -17,9 +17,13 @@ LIGHT_LAYOUT_SETTINGS = {"plot_bgcolor": "white"}
 BINS = [-1, 0, 3, 5, 8, 100]
 
 
-def hsl_to_hex(h, s, lightness) -> str:
-    """Convert HSL (0-1) to HEX"""
-    r, g, b = colorsys.hls_to_rgb(h, lightness, s)
+def hsl_to_hex(hue, saturation, lightness) -> str:
+    """
+    Convert HSL (0-1) to HEX
+    Uusally hue is in [0, 360] range, but here we use [0, 1] for consistency with other functions.
+    """
+
+    r, g, b = colorsys.hls_to_rgb(hue, lightness, saturation)
     return "#%02x%02x%02x" % (int(r * 255), int(g * 255), int(b * 255))
 
 
@@ -30,6 +34,7 @@ def custom_color_scale(
     Create a custom color scale for the heatmap with one color indicating no acitivity
     (light gray in light mode, dark gray in dark mode). Color scale is created with
     [hue] and [saturation] parameters in [num_colors] lightness values.
+    [hue] is in range [0, 360]
     """
     # green = 120
     hue = hue / 360
@@ -54,12 +59,13 @@ def github_weekday(date: dt.date) -> int:
     return date.isoweekday() % 7
 
 
-def week_of_year(date: dt.date, year: int) -> int:
+def week_of_year(date: dt.date) -> int:
     """
     Return the week of the year for a given [date] in the [year].
     In the isocalendar system, the last days in the year can be in the first week of the next year.
     To avoid this, we use this custom week of year function.
     """
+    year = date.year
     # tm_yday provides the number of the day in the year
     return (date.timetuple().tm_yday + github_weekday(dt.date(year, 1, 1)) - 1) // 7
 
@@ -105,7 +111,7 @@ def week_labels_x(year: int) -> dict:
         {"date": date_range(dt.date(year, 1, 1), dt.date(year, 12, 31))}
     )
     base["month"] = base.date.apply(lambda x: x.strftime("%b"))
-    base["calendar_week"] = base.date.apply(lambda x: week_of_year(x, 2025))
+    base["calendar_week"] = base.date.apply(lambda x: week_of_year(x))
     # count the days in every month_week
     days_per_month_week = (
         base.groupby(["calendar_week", "month"])

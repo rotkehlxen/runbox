@@ -41,7 +41,7 @@ def process_data(
 
     # add columns for plotting
     data["github_weekday"] = data.date.apply(lambda x: github_weekday(x))
-    data["calendar_week"] = data.date.apply(lambda x: week_of_year(x, 2025))
+    data["calendar_week"] = data.date.apply(lambda x: week_of_year(x))
     data["distance_bin"] = pd.cut(
         data.distance_km.round(), bins=bins, labels=list(range(num_colors))
     )
