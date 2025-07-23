@@ -35,10 +35,17 @@ jobs:
           echo "${{ secrets.GARTH_OAUTH1 }}" > $HOME/.garth/oauth1_token.json 
           echo "${{ secrets.GARTH_OAUTH2 }}" > $HOME/.garth/oauth2_token.json
 
-      # 4. Install dependencies and the project
+      # 5. Install dependencies and the project
       - name: Install packaage and dependencies
         run: poetry install --no-interaction
 
-      # 5. Execute the chart plotting (use Console entry point)
+      # 6. Execute the chart plotting (use Console entry point)
       - name: Run Python script
         run: poetry run update-chart
+
+      - name: Deploy to GitHub Pages (main branch, root folder)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: main
