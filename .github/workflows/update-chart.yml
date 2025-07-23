@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: "0 9 * * *"   # every day at 09:00 UTC
 
+permissions:
+  contents: write           # needed for gh-pages deployment
+  
 jobs:
   update-chart:
     runs-on: ubuntu-latest
@@ -42,10 +45,13 @@ jobs:
       # 6. Execute the chart plotting (use Console entry point)
       - name: Run Python script
         run: poetry run update-chart
-
-      - name: Deploy to GitHub Pages (main branch, root folder)
-        uses: peaceiris/actions-gh-pages@v3
+      
+      # 7. Deploy Github Pages from branch gh-pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-          publish_branch: main
+          publish_branch: gh-pages
+          publish_dir: .        # deploy from repo root
+          destination_dir: .    # put it in root of gh-pages
+          keep_files: false     # replace old version
