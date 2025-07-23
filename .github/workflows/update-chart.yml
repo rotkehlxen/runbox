@@ -52,7 +52,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: .        # deploy from repo root
-          destination_dir: .    # put it in root of gh-pages
+          publish_dir: ./site   # deploy from repo folder site/
+          destination_dir: .    # put it in root of gh-pages branch
           keep_files: false     # replace old version
           force_orphan: true

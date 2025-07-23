@@ -33,7 +33,7 @@ def update_chart() -> None:
         mode="light",
         title=TITLE,
     )
-    print("Successfully created the plot in index.html.")
+    print("Successfully created the plot.")
 
 
 if __name__ == "__main__":
