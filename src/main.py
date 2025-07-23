@@ -13,7 +13,7 @@ TODAY = dt.date.today()
 YEAR = TODAY.year
 
 
-def main() -> None:
+def update_chart() -> None:
     # get data
     run_activities_raw = request_data(from_date=dt.date(YEAR, 1, 1), to_date=TODAY)
     # parse and validate data
@@ -34,4 +34,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    update_chart()

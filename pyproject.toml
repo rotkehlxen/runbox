@@ -37,3 +37,6 @@ build-backend = "poetry.core.masonry.api"
 pythonpath = [
     "src"  # <-- Tell pytest to add src/ to sys.path
 ]
+
+[tool.poetry.scripts]
+update-chart = "main:update_chart"
