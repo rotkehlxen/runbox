@@ -98,4 +98,4 @@ def create_plot_html(
 
     fig.update_layout(width=1000, height=300, title=title, **layout_settings)
 
-    fig.write_html("index.html")
+    fig.write_html("site/index.html")
