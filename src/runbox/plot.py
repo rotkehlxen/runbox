@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
-from style import (
+from runbox.style import (
     DARK_LAYOUT_SETTINGS,
     LIGHT_LAYOUT_SETTINGS,
     color_scale_labels,

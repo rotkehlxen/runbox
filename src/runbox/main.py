@@ -2,10 +2,10 @@ import datetime as dt
 
 import pandas as pd
 
-from auth import request_data
-from models import GarminActivity
-from plot import create_plot_html, process_data
-from style import (
+from runbox.auth import request_data
+from runbox.models import GarminActivity
+from runbox.plot import create_plot_html, process_data
+from runbox.style import (
     BINS,
 )
 
