@@ -5,7 +5,7 @@ You can find the chart here:
 
 Github actions are configured to
 
-1. fetch my run activity data from the Garmin Connect API **daily at 9am UTC**
+1. fetch my run activity data from the Garmin Connect API **every Monday at 7pm UTC**
 2. update the chart
 3. deploy the chart to githup pages (from a dedicated gh-pages branch)
 
