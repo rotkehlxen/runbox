@@ -5,7 +5,9 @@ from pathlib import Path
 
 from garminconnect import Garmin, GarminConnectAuthenticationError
 
-TOKENSTORE = os.getenv("GARTH_HOME", str(Path.home() / ".garth"))
+TOKENSTORE = os.getenv(
+    "GARTH_HOME", str(Path.home() / ".garminconnect")
+)  # default to ~/.garminconnect
 
 
 def connect() -> Garmin:
