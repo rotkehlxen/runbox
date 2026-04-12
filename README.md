@@ -18,26 +18,21 @@ Garmin API access tokens have been created like so:
 
 ```python
 import garminconnect
-import os
 from getpass import getpass
 
 email = input("Enter email address: ")
 password = getpass("Enter password: ")
 
 garmin = garminconnect.Garmin(email, password)
-garmin.login()
-
-GARTH_HOME = os.getenv("GARTH_HOME", "~/.garth")
-garmin.garth.dump(GARTH_HOME)
+garmin.login('~/.garminconnect')
 ``` 
 
-The tokens (two json files, oauth1_token.json and oauth2_token.json) are dumped to folder `.garth` in the home folder.
-To use these tokens in github actions, the json files need to be encoded as strings, e.g.
+One token file named `garmin_tokens.json` will be written to folder `˜/.garminconnect`
+To use this token in github actions, the json file has to be encoded as a string, e.g.
 
 ```bash
-cat oauth1_token.json | base64 -w 0
+cat garmin_tokens.json | base64 -w 0
 ```
 
-Then you can store these strings as Github Secrets. 
-Within github actions you can read these strings from the Secrets, decode them using `base64 -d` and write
-them back into json files with their orgininal names (check update-chart.yml).
+Then you can store this string as a Github Secret. 
+Within github actions you can read the string from the Secret, decode it using `base64 -d` and write it back into a json file with its orgininal name (check update-chart.yml for details).
