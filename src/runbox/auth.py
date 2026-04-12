@@ -4,7 +4,6 @@ import sys
 from pathlib import Path
 
 from garminconnect import Garmin, GarminConnectAuthenticationError
-from garth.exc import GarthHTTPError
 
 TOKENSTORE = os.getenv(
     "GARTH_HOME", str(Path.home() / ".garminconnect")
@@ -30,7 +29,7 @@ def connect() -> Garmin:
         print(f"No authentication tokens found at {TOKENSTORE}")
         sys.exit("Stopping.")
 
-    except (GarthHTTPError, GarminConnectAuthenticationError):
+    except GarminConnectAuthenticationError:
         print("The login tokens are invalid or expired. Please rotate them.")
         sys.exit("Stpping.")
 
@@ -55,7 +54,7 @@ def request_data(from_date: dt.date, to_date: dt.date) -> list[dict | None]:
 
         return activities
 
-    except (GarthHTTPError, GarminConnectAuthenticationError) as err:
+    except GarminConnectAuthenticationError as err:
         print(err)
         sys.exit(
             "We could not connect to Garmin. The login tokens may be invalid "
