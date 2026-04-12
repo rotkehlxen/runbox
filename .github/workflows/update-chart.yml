@@ -31,12 +31,11 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
       
-      # 4. Restore Garmin token files from secrets ($HOME refers to the home in the runner)
-      - name: Restore Garmin token files
+      # 4. Restore Garmin token file from secret ($HOME refers to the home in the runner)
+      - name: Restore Garmin token file
         run: |
-          mkdir -p $HOME/.garth
-          echo "${{ secrets.GARTH_OAUTH1 }}" | base64 -d > $HOME/.garth/oauth1_token.json 
-          echo "${{ secrets.GARTH_OAUTH2 }}" | base64 -d > $HOME/.garth/oauth2_token.json
+          mkdir -p $HOME/.garminconnect
+          echo "${{ secrets.GARMIN_TOKEN }}" | base64 -d > $HOME/.garminconnect/garmin_tokens.json 
 
       # 5. Install dependencies and the project
       - name: Install packaage and dependencies
