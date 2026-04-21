@@ -38,14 +38,36 @@ jobs:
           echo "${{ secrets.GARMIN_TOKEN }}" | base64 -d > $HOME/.garminconnect/garmin_tokens.json 
 
       # 5. Install dependencies and the project
-      - name: Install packaage and dependencies
+      - name: Install package and dependencies
         run: poetry install --no-interaction
 
       # 6. Execute the chart plotting (use Console entry point)
       - name: Run Python script
         run: poetry run update-chart
+
+      # 7. Rotate GARMIN_TOKEN secret automatically after a successful run.
+      # Requires a repo secret named REPO_SECRET_PAT with permission to write
+      # Actions secrets for this repository.
+      - name: Rotate GARMIN_TOKEN secret
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.REPO_SECRET_PAT }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "Missing REPO_SECRET_PAT secret. Cannot rotate GARMIN_TOKEN automatically." >&2
+            exit 1
+          fi
+
+          if [ ! -f "$HOME/.garminconnect/garmin_tokens.json" ]; then
+            echo "Missing token file at $HOME/.garminconnect/garmin_tokens.json" >&2
+            exit 1
+          fi
+
+          base64 -w 0 "$HOME/.garminconnect/garmin_tokens.json" \
+            | gh secret set GARMIN_TOKEN --repo "$GITHUB_REPOSITORY"
+          echo "GARMIN_TOKEN secret rotated successfully."
       
-      # 7. Deploy Github Pages from branch gh-pages
+      # 8. Deploy Github Pages from branch gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
