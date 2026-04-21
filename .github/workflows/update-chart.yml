@@ -63,8 +63,8 @@ jobs:
             exit 1
           fi
 
-          base64 -w 0 "$HOME/.garminconnect/garmin_tokens.json" \
-            | gh secret set GARMIN_TOKEN --repo "$GITHUB_REPOSITORY"
+          gh secret set GARMIN_TOKEN --repo "$GITHUB_REPOSITORY" \
+            --body "$(base64 -w 0 "$HOME/.garminconnect/garmin_tokens.json")"
           echo "GARMIN_TOKEN secret rotated successfully."
       
       # 8. Deploy Github Pages from branch gh-pages
