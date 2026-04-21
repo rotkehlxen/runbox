@@ -24,7 +24,7 @@ email = input("Enter email address: ")
 password = getpass("Enter password: ")
 
 garmin = garminconnect.Garmin(email, password)
-garmin.login('~/.garminconnect')
+garmin.login()
 ``` 
 
 One token file named `garmin_tokens.json` will be written to folder `˜/.garminconnect`
@@ -36,3 +36,6 @@ cat garmin_tokens.json | base64 -w 0
 
 Then you can store this string as a Github Secret. 
 Within github actions you can read the string from the Secret, decode it using `base64 -d` and write it back into a json file with its orgininal name (check update-chart.yml for details).
+
+We are now using a github token which will allow us to refresh the Garmin token after each successful connect. Note that this token will expire on July 20th 2026. Also note that we store the value of this token in another secret for
+this repository.
