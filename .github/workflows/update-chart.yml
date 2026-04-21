@@ -3,7 +3,7 @@ name: Update Chart of Running Activities
 on:
   workflow_dispatch:   # allow manual trigger
   schedule:
-    - cron: "0 19 * * 1"   # every monday at 07:00 pm UTC
+    - cron: "0 17 * * *"   # every day at 17:00 UTC (19:00 Berlin during DST)
 
 permissions:
   contents: write           # needed for gh-pages deployment
