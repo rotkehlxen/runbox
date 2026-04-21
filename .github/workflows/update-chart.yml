@@ -67,7 +67,7 @@ jobs:
             --body "$(base64 -w 0 "$HOME/.garminconnect/garmin_tokens.json")"
           echo "GARMIN_TOKEN secret rotated successfully."
       
-      # 8. Deploy Github Pages from branch gh-pages
+      # 8. Deploy GitHub Pages from branch gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
