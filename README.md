@@ -24,7 +24,7 @@ email = input("Enter email address: ")
 password = getpass("Enter password: ")
 
 garmin = garminconnect.Garmin(email, password)
-garmin.login('~/.garminconnect')
+garmin.login()
 ``` 
 
 One token file named `garmin_tokens.json` will be written to folder `˜/.garminconnect`
